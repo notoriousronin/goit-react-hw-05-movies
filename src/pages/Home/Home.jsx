@@ -1,39 +1,35 @@
 import React from 'react';
+import { useState, useEffect } from 'react';
+import { fetchTrendingMovies } from 'API/API';
+import { MoviesList } from 'components/MovieList/MovieList';
 
-export default Home = () => {
-  return <div>This is Home</div>;
+export const Home = () => {
+  const [trendingMovies, setTrendingMovies] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    async function getMoviesData() {
+      try {
+        setIsLoading(true);
+        const { result } = await fetchTrendingMovies();
+        setTrendingMovies(result);
+      } catch (error) {
+        console.log(error);
+        return alert(`Damn, we got problem here:( )`);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+    getMoviesData();
+  }, []);
+
+  return (
+    <div>
+      <h2>Trending Movies</h2>
+      {isLoading && <div>Loading...</div>}
+      {trendingMovies && <MoviesList trendingMovies={trendingMovies} />}
+    </div>
+  );
 };
 
-// import { useState, useEffect } from 'react';
-// import { fetchTrendingMovies } from 'API/API';
-
-// const Home = () => {
-//   const [trendingMovies, setTrandingMovies] = useState(null);
-//   const [loading, setLoading] = useState(false);
-
-//   useEffect(() => {
-//     async function getMovieData() {
-//       try {
-//         setLoading(true);
-//         const { results } = await fetchTrandingMovies();
-//         setTrandingMovies(results);
-//       } catch (error) {
-//         console.log(error);
-//         return alert(`Damn bro, i'm tired`);
-//       } finally {
-//         setLoading(false);
-//       }
-//     }
-
-//     getMovieData();
-//   }, []);
-//   return (
-//     <div>
-//       <h2>Trending Movies</h2>
-//       {loading && <div>Loading...</div>}
-//       {trendingMovies && <div>This is Movie List</div>}
-//     </div>
-//   );
-// };
-
-// export default Home;
+export default Home;
