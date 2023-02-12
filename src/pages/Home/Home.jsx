@@ -1,33 +1,33 @@
-import React from 'react';
 import { useState, useEffect } from 'react';
-import { fetchTrendingMovies } from 'API/API';
-import { MoviesList } from 'components/MovieList/MovieList';
+import { MoviesList } from 'components/MovieList/MoviesList';
+import { fetchTrandingMovies } from 'API/API';
 
-export const Home = () => {
-  const [trendingMovies, setTrendingMovies] = useState(null);
+const Home = () => {
+  const [trandingMovies, setTrandingMovies] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    async function getMoviesData() {
+    async function fetchData() {
       try {
         setIsLoading(true);
-        const { result } = await fetchTrendingMovies();
-        setTrendingMovies(result);
+        const { results } = await fetchTrandingMovies();
+        setTrandingMovies(results);
       } catch (error) {
         console.log(error);
-        return alert(`Damn, we got problem here:( )`);
+        return alert(`Sorry, please try again`);
       } finally {
         setIsLoading(false);
       }
     }
-    getMoviesData();
+
+    fetchData();
   }, []);
 
   return (
     <div>
-      <h2>Trending Today</h2>
-      {isLoading && <div>Loading...</div>}
-      {trendingMovies && <MoviesList trendingMovies={trendingMovies} />}
+      <h2>Trending today</h2>
+      {isLoading && <div>...Loading</div>}
+      {trandingMovies && <MoviesList trandingMovies={trandingMovies} />}
     </div>
   );
 };
