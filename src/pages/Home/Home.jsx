@@ -25,7 +25,7 @@ export const Home = () => {
 
   return (
     <div>
-      <h2>Trending Movies</h2>
+      <h2>Trending Today</h2>
       {isLoading && <div>Loading...</div>}
       {trendingMovies && <MoviesList trendingMovies={trendingMovies} />}
     </div>
